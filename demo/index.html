@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!--[if lt IE 9]>
+    <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>gridstack-angular demo</title>
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+    <link rel="stylesheet" href="bower_components/gridstack/dist/gridstack.css"/>
+    <link rel="stylesheet" href="bower_components/gridstack/dist/gridstack-extra.css"/>
+    <link rel="stylesheet" href="../src/css/bootstrap.css"/>
+    <link rel="stylesheet" href="../src/css/site.css"/>
+    <link rel="stylesheet" href="../src/css/gridstack.css"/>
+    <link rel="stylesheet" href="../src/css/gridstack-extra.css"/>
+
+    <style type="text/css">
+        .grid1 {
+            background: #c6ecf1;
+        }
+        .grid-stack-item-content {
+            color: #2c3e50;
+            text-align: center;
+            background-color: #732145;
+        }
+        .grid-stack {
+        background: lightgoldenrodyellow;
+      }
+
+      .grid-stack-item-content {
+        color: #2c3e50;
+        text-align: center;
+        background-color: #18bc9c;
+      }
+
+      #json-data {
+        color: #2c3e50;
+      }
+      /* Please see documentation at https://docs.microsoft.com/aspnet/core/client-side/bundling-and-minification
+for details on configuring this project to bundle and minify static web assets. */
+
+a.navbar-brand {
+  white-space: normal;
+  text-align: center;
+  word-break: break-all;
+}
+
+/* Sticky footer styles
+-------------------------------------------------- */
+html {
+  font-size: 14px;
+}
+@media (min-width: 768px) {
+  html {
+    font-size: 16px;
+  }
+}
+
+.border-top {
+  border-top: 1px solid #e5e5e5;
+}
+.border-bottom {
+  border-bottom: 1px solid #e5e5e5;
+}
+
+.box-shadow {
+  box-shadow: 0 .25rem .75rem rgba(0, 0, 0, .05);
+}
+
+button.accept-policy {
+  font-size: 1rem;
+  line-height: inherit;
+}
+
+/* Sticky footer styles
+-------------------------------------------------- */
+
+    </style>
+</head>
+<!-- <body ng-app="GridStack" ng-controller="DemoCtrl">
+    <div class="container-fluid">
+        <h1>gridstack-angular demo</h1>
+        <p>{{widgets}}</p>
+        <div>
+            <a class="btn btn-primary" ng-click="addWidget()" href="#">Add Widget</a>
+            <a class="btn btn-primary" ng-click="moveWidget()" href="#">Move Widget</a>
+        </div>
+        <br>
+        <div class="row">
+            <div class="col-md-12">
+                <div gridstack class="grid-stack grid1" options="options" on-change="onChange(event,items)" on-drag-start="onDragStart(event,ui)" on-drag-stop="onDragStop(event,ui)" on-resize-start="onResizeStart(event,ui)" on-resize-stop="onResizeStop(event,ui)">
+                    <div gridstack-item ng-repeat="w in widgets" class="grid-stack-item" gs-item-x="w.x" gs-item-y="w.y"
+                         gs-item-width="w.width" gs-item-height="w.height" gs-item-autopos="1" on-item-added="onItemAdded(item)" on-item-removed="onItemRemoved(item)">
+                            <div class="grid-stack-item-content">
+                                <a class="btn btn-primary" ng-click="removeWidget(w)" href="#">remove</a>
+                            </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div> -->
+    <!-- > -->
+    <body ng-app="GridStack" ng-controller="DemoCtrl" ng-init="init()">
+      <nav
+        class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3"
+      >
+        <div class="container">
+          <a class="navbar-brand" href="/demo">sample_grid</a>
+          <button
+            class="navbar-toggler"
+            type="button"
+            data-toggle="collapse"
+            data-target=".navbar-collapse"
+            aria-controls="navbarSupportedContent"
+            aria-expanded="false"
+            aria-label="Toggle navigation"
+          >
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div
+            class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse"
+          >
+            <ul class="navbar-nav flex-grow-1">
+              <li class="nav-item">
+                <a class="nav-link text-dark" href="/demo">Home</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link text-dark" href="/Privacy">Privacy</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </nav>
+    </header>
+    <div class="container">
+      <main role="main" class="pb-3">
+        <div class="text-center">
+          <div class="device-xs visible-xs"></div>
+          <div class="device-sm visible-sm"></div>
+          <div class="device-md visible-md"></div>
+          <div class="device-lg visible-lg"></div>
+          <div class="device-xl visible-xl"></div>
+          <div class="container-fluid">
+            <a class="btn btn-primary" id="save-grid" ng-click="saveWidget(widgets)" href="#">Save Grid</a>
+            <a class="btn btn-primary" id="add-cell" ng-click="addWidget()" href="#">Add Cell</a>
+            <div class="grid-stack"></div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-12">
+            <div gridstack class="grid-stack grid1" options="options" on-change="onChange(event,items)"
+              on-drag-start="onDragStart(event,ui)" on-drag-stop="onDragStop(event,ui)"
+              on-resize-start="onResizeStart(event,ui)" on-resize-stop="onResizeStop(event,ui)">
+              <div gridstack-item ng-repeat="w in widgets" class="grid-stack-item" gs-item-x="w.x" gs-item-y="w.y"
+                gs-item-width="w.width" gs-item-height="w.height" gs-item-id="w.$$hashKey" gs-item-autopos="1"
+                on-item-added="onItemAdded(item)" on-item-removed="onItemRemoved(item)">
+                <div class="grid-stack-item-content">
+                  <p>HTML (added)</p>
+                </div>
+    
+                <div class="grid-stack-item-content ui-draggable-handle" ng-if="w.isContent">
+                  <div>
+                    <a ng-click="removeWidget(w)" href="#">remove</a>
+                  </div>
+                  <hr>
+                  <div style="clear: both"></div>
+                  <h5>Select Chart Type</h5>
+    
+                  <select class="form-control js-chart-type" style="width:40%;margin-left:30%;margin-top:5px;"
+                    ng-model="w.ct" ng-change="updateChart(w.ct,w)">
+                    <option ng-repeat="Chart in availableCharts" id={{Chart.chartid}} value="{{Chart.chartname}}"
+                      ng-selected="w.ct == Chart.chartname">
+                      {{Chart.chartname}}
+                    </option>
+    
+                  </select>
+    
+                  <hr>
+                  <h5>Available Queries</h5>
+    
+                  <select class="form-control js-chart-type" style="width:40%;margin-left:30%;margin-top:5px;"
+                    ng-model="w.cname" ng-change="update(w.cname,w)">
+    
+                    <option ng-repeat="queries in queryCharts" id={{queries.queryId}} value="{{queries.chartDisplayName}}"
+                      ng-selected="w.cname == queries.chartDisplayName">
+                       {{queries.chartDisplayName}}
+                    </option>
+                  </select>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </main>
+    </div>
+
+    <footer class="border-top footer text-muted">
+      <div class="container">
+        &copy; 2019 - sample_grid - <a href="/Privacy">Privacy</a>
+      </div>
+    </footer>
+             
+    <script src="bower_components/jquery/dist/jquery.min.js"></script>
+    <script src="bower_components/jquery-ui/jquery-ui.js"></script>
+    <script src="bower_components/lodash/dist/lodash.min.js"></script>
+    <!-- <script src="bower_components/angular/angular.min.js"></script> -->
+    <script src="bower_components/gridstack/dist/gridstack.js"></script>
+    <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.19/angular.js"></script>
+<script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.19/angular-cookies.js"></script>
+    <!-- <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.6.1/angular-cookies.js"></script> -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+    
+    <script src="../src/gridstack.controller.js"></script>
+    <script src="../src/gridstack.directive.js"></script>
+    <script src="../src/gridstackitem.directive.js"></script>
+    <script src="../src/saveGridStack.Controller.js"></script>
+
+    
+
+    <script type="text/javascript">
+        var app = angular.module('GridStack', ['gridstack-angular','ngCookies']);
+          app.controller('DemoCtrl',[ '$scope', '$window', '$cookieStore', '$cookies', '$log', 
+          function($scope, $window, $cookieStore, $cookies, $log) {
+            $scope.myvar = "";
+            $scope.widgets = [
+            { x: 0, y: 0, width: 6, height: 6, ct: 'Line Chart', cid: '', cname: '',isContent:true },
+            { x: 6, y: 6, width: 6, height: 6, ct: 'Line Chart', cid: '', cname: '',isContent:true },
+            { x: 0, y: 0, width: 6, height: 6, ct: 'Line Chart', cid: '', cname: '' ,isContent:true},
+            { x: 6, y: 6, width: 6, height: 6, ct: 'Line Chart', cid: '', cname: '' ,isContent:true}
+              ];
+            $scope.myCookieVal = $cookieStore.get("gridData");
+            
+            $scope.selectQueries = "";
+           $scope.widgetChangedSizes = [];
+            $scope.options = {
+                cellHeight: 100,
+                verticalMargin: 10
+            };
+                
+    
+             $scope.updateDocumentCookie = function (name, value) {
+              //console.log('updateDocumentCookie : Attempting to update cookie "' + $window.document.cookie + '" with "' + name + '=' + value + '"');
+              $window.document.cookie = name + ' ' + value;
+              console.log('updateDocumentCookie : Updated cookie values = "' + $window.document.cookie + '"');        
+            };
+           
+             $scope.getCookie= function(cname) {
+                  var name = cname + "=";
+                  var decodedCookie = decodeURIComponent(document.cookie);
+                  var ca = decodedCookie.split(';');
+                  for (var i = 0; i < ca.length; i++) {
+                      var c = ca[i];
+                      while (c.charAt(0) === ' ') {
+                          c = c.substring(1);
+                      }
+                      if (c.indexOf(name) === 0) {
+                          return c.substring(name.length, c.length);
+                      }
+                  }
+                  return "";
+              }
+              $scope.init = function () {
+                  $scope.GetUserCharts(false);
+                  $scope.loadgrid();
+              };
+
+            $scope.GetUserCharts = function (isPreview) {
+                   
+                   var res = [{queryId:1,chartDisplayName:"sales by month"},{queryId:2,chartDisplayName:"Sales by payment method"},
+                   {queryId:3,"chartDisplayName":"Sales by Location"},{queryId:4,"chartDisplayName":"Sales by Category"}];
+
+                  $scope.LoadDashboard(isPreview, res);
+              };
+              $scope.LoadDashboard = function (isPreview, userCharts) {
+
+              $scope.availableCharts = [];
+              $scope.queryCharts = [];
+              $scope.queryCharts = userCharts;
+              $scope.availableCharts.push({ chartid: 'Line_Chart', chartname: 'Line Chart' });
+              $scope.availableCharts.push({ chartid: 'Column_Chart', chartname: 'Column Chart' });
+              $scope.availableCharts.push({ chartid: 'Goal_Meter', chartname: 'Goal Meter' });
+              $scope.availableCharts.push({ chartid: 'Pie_Chart', chartname: 'Pie Chart' });
+              $scope.availableCharts.push({ chartid: 'Doughnut_Chart', chartname: 'Doughnut Chart' });
+              $scope.availableCharts.push({ chartid: 'Column_Stack', chartname: 'Column Stack' });
+              $scope.availableCharts.push({ chartid: 'Area_Chart', chartname: 'Area Chart' });
+              $scope.availableCharts.push({ chartid: 'Combo', chartname: 'Combo' });
+              $scope.availableCharts.push({ chartid: 'HeatMap', chartname: 'HeatMap' });
+              $scope.availableCharts.push({ chartid: 'Table', chartname: 'Table' });
+              $scope.availableCharts.push({ chartid: 'Bubble_Chart', chartname: 'Bubble Chart' });
+              $scope.availableCharts.push({ chartid: 'Geo_Map', chartname: 'Geo Map' });
+              $scope.availableCharts.push({ chartid: 'KPI', chartname: 'KPI' });
+              $scope.availableCharts.push({ chartid: 'Gauge_Meter', chartname: 'Gauge Meter' });
+              $scope.availableCharts.push({ chartid: 'Card', chartname: 'Card' });
+              $scope.availableCharts.push({ chartid: 'Scorecard', chartname: 'Scorecard' });
+              $scope.availableCharts.push({ chartid: 'TreeMap', chartname: 'TreeMap' });
+              $scope.availableCharts.push({ chartid: 'List', chartname: 'List' });
+              $scope.cname= $scope.queryCharts[0].chartDisplayName;
+              $scope.ct = $scope.availableCharts[0].chartname;
+              
+              
+              
+              
+          }
+          $scope.update = function(obj,item){
+            $scope.myvar = obj;
+            angular.forEach(item,function(){
+              item.cname = obj;
+            })
+            
+          }
+         $scope.updateChart = function (chart, item) {
+              angular.forEach(item, function () {
+                item.ct = chart;
+              })
+            }
+          
+          $scope.saveWidget = function(object){
+            angular.forEach(object,function(item){
+              item.isContent = true;
+              if((object.ct == "Line Chart" && object.cname == "sales by month") || (object.ct == "" && object.cname == "")){
+              item.ct ="Line Chart",
+              item.cname = "sales by month"
+              }
+            })
+            
+            
+            $scope.saveGrid($scope.myvar);
+          }
+          $scope.getDefaultData = function() {
+        return $scope.widgets = [
+            { x: 0, y: 0, width: 6, height: 6, ct: 'Line Chart', cid: '', cname: 'sales by month',isContent:true },
+            { x: 6, y: 6, width: 6, height: 6, ct: 'Line Chart', cid: '', cname: 'sales by month',isContent:true },
+            { x: 0, y: 0, width: 6, height: 6, ct: 'Line Chart', cid: '', cname: 'sales by month', isContent:true },
+            { x: 6, y: 6, width: 6, height: 6, ct: 'Line Chart', cid: '', cname: 'sales by month',isContent:true }
+          ];
+    }
+          $scope.loadgrid = function() {
+              var gd = $cookieStore.get('gridData');
+              
+              if (gd !== undefined && gd.length > 0) 
+              {
+               $scope.widgets = angular.fromJson(gd);
+               //console.log($scope.temp);
+               
+               
+              } else {
+                $scope.widgets = $scope.getDefaultData();
+              }
+          }
+          $scope.saveGrid = function (option) {
+            console.log(option);
+            this.serializedData = angular.element(document.querySelector('.grid-stack-item-content'))
+            angular.forEach($scope.widgetChangedSizes,function(value,key1){
+            angular.forEach($scope.widgets,function(item,key){
+              if(value.gsId === item.$$hashKey){
+               item.x = value.gsX,
+               item.y = value.gsY
+               item.width = value.gsWidth,
+               item.height = value.gsHeight
+              }
+            })
+
+          })
+           
+           $cookieStore.put('gridData',JSON.stringify($scope.widgets));
+           $scope.updateDocumentCookie('gridData=',JSON.stringify($scope.widgets))
+           console.log($scope.widgets);
+           
+        }
+
+         
+
+            $scope.addWidget = function() {
+                var newWidget = { x:0, y:0, width:1, height:1 ,ct:"",cname:""};
+                $scope.widgets.push(newWidget);
+            };
+
+            $scope.moveWidget = function() {
+                $scope.widgets[0].x = 1;
+                $scope.widgets[0].width = 2;
+                $scope.widgets[0].height = 2;
+            };
+
+            $scope.removeWidget = function(w) {
+                var index = $scope.widgets.indexOf(w);
+                $scope.widgets.splice(index, 1);
+            };
+
+            $scope.onChange = function(event, items) {
+                $log.log("onChange event: "+event+" items:"+items);
+            };
+
+            $scope.onDragStart = function(event, ui) {
+                $log.log("onDragStart event: "+event+" ui:"+ui);
+            };
+
+            $scope.onDragStop = function(event, ui) {
+                $log.log("onDragStop event: "+event+" ui:"+ui);
+            };
+
+            $scope.onResizeStart = function(event, ui) {
+                $log.log("onResizeStart event: "+event+" ui:"+ui);
+            };
+
+            $scope.onResizeStop = function(event, ui) {
+               $scope.widgetChangedSizes =[];
+               console.log(ui.originalElement)
+                $scope.widgetChangedSizes.push({
+                  gsId:ui.originalElement[0].dataset.gsId,
+                  gsX:ui.originalElement[0].dataset.gsX,
+                  gsY:ui.originalElement[0].dataset.gsY,
+                  gsWidth:ui.originalElement[0].dataset.gsWidth,
+                  gsHeight:ui.originalElement[0].dataset.gsHeight}); 
+                };
+
+            $scope.onItemAdded = function(item) {
+                $log.log("onItemAdded item: "+item);
+            };
+
+            $scope.onItemRemoved = function(item) {
+                $log.log("onItemRemoved item: "+item);
+            };
+            
+
+        }]);
+    </script>
+
+</body>
+</html>
